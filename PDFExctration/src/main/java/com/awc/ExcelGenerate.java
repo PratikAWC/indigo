@@ -16,6 +16,7 @@ public class ExcelGenerate {
 	public void test() throws IOException {
 		PdfStripper cs = new PdfStripper();
 
+		
 		/*Map<Integer, ArrayList<String>> m = cs.getPdf();
 		try {
 			String filename = "C:\\Users\\Pratik\\Desktop\\Indigo Data\\Cargo\\GOIFile.xls";

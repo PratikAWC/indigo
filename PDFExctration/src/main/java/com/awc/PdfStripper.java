@@ -13,6 +13,7 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 public class PdfStripper {
+	
 	private Properties prop;
 	private TreeMap<Integer, ArrayList<String>> map;
 	private Long[] datax;

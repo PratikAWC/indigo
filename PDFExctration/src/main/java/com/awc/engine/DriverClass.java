@@ -27,6 +27,7 @@ public class DriverClass {
 		ApplicationContext ctx=new ClassPathXmlApplicationContext("spring.xml");
 		PdfStripper stripper=(PdfStripper)ctx.getBean("stripper");
 		Map<Integer,ArrayList<String>> myMap=stripper.readPdf("C:\\Users\\Pratik\\Desktop\\Indigo Data\\Cargo\\AAICLAS - GOI.pdf", "CargoGoa");
+		
 		/*Set<Entry<Integer, ArrayList<String>>> set=myMap.entrySet();
 		Iterator<Entry<Integer, ArrayList<String>>> itr=set.iterator();
 		while(itr.hasNext()) {
