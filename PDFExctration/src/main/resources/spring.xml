@@ -6,6 +6,7 @@
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"> <!-- bean definitions here -->
 
 	<bean id="stripper" class="com.awc.PdfStripper">
+	
 		<property name="prop">
 			<util:properties location="classpath:regex.properties" />
 		</property>
