@@ -1,7 +1,8 @@
-package com;
+package com.awc;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,9 +14,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class ExcelGenerate {
 	public void test() throws IOException {
-		PdfConsuming cs = new PdfConsuming();
+		PdfStripper cs = new PdfStripper();
 
-		Map<Integer, String[]> m = cs.getPdf();
+		/*Map<Integer, ArrayList<String>> m = cs.getPdf();
 		try {
 			String filename = "C:\\Users\\Pratik\\Desktop\\Indigo Data\\Cargo\\GOIFile.xls";
 			HSSFWorkbook workbook = new HSSFWorkbook();
@@ -32,19 +33,19 @@ public class ExcelGenerate {
 
 			int counter = 1;
 
-			Set<Entry<Integer, String[]>> set=m.entrySet();
-			Iterator<Entry<Integer, String[]>> itr=set.iterator();
+			Set<Entry<Integer, ArrayList<String>>> set=m.entrySet();
+			Iterator<Entry<Integer, ArrayList<String>>> itr=set.iterator();
 			int count=1;
 			while(itr.hasNext()) {
 				HSSFRow row = sheet.createRow(count++);
-				Entry<Integer, String[]> entry=itr.next();
-				String arr[]=entry.getValue();
-				for(int j=0;j<arr.length;j++) {
+				Entry<Integer, ArrayList<String>> entry=itr.next();
+				 ArrayList<String> arr=entry.getValue();
+				for(int j=0;j<arr.size();j++) {
 					if(j==4 || j==5 || j==6) {
-						row.createCell(j).setCellValue(Float.parseFloat(arr[j]));
+						row.createCell(j).setCellValue(Float.parseFloat(arr.get(j)));
 					}
 					else {
-						row.createCell(j).setCellValue(arr[j]);
+						row.createCell(j).setCellValue(arr.get(j));
 					}
 				}
 			}
@@ -59,6 +60,6 @@ public class ExcelGenerate {
 			ex.printStackTrace();
 		}
 
-	}
+*/	}
 
 }
