@@ -3,23 +3,40 @@ package com.awc;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import com.awc.dao.ExcelData;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 public class PdfStripper {
 	
+	
+	private ExcelData excelData;
 	private Properties prop;
 	private TreeMap<Integer, ArrayList<String>> map;
-	private Long[] datax;
 	private PdfReader pdfReader;
 	private String pageContent;
-	private Pattern pattern;
+	private Pattern pattern,invNumPat,invPerPat;
+	private ArrayList<String> regexAl;
+	private String invoiceNumber,invoicePeriod;
+	private Matcher invNumMat,invPerMat;
+	/**
+	 * @return the regexAl
+	 */
+	public ArrayList<String> getRegexAl() {
+		return regexAl;
+	}
+
+	/**
+	 * @param regexAl the regexAl to set
+	 */
+	public void setRegexAl(ArrayList<String> regexAl) {
+		this.regexAl = regexAl;
+	}
+
 	/**
 	 * @return the prop
 	 */
@@ -48,14 +65,50 @@ public class PdfStripper {
 		this.map = map;
 	}
 	
-	public Map<Integer, ArrayList<String>> readPdf(String path,String type){
+	/**
+	 * @return the excelData
+	 */
+	public ExcelData getExcelData() {
+		return excelData;
+	}
+
+	/**
+	 * @param excelData the excelData to set
+	 */
+	public void setExcelData(ExcelData excelData) {
+		this.excelData = excelData;
+	}
+
+	public ExcelData readPdf(String path,String type){
 		try {
 			pdfReader=new PdfReader(path);
-			pattern = Pattern.compile(prop.getProperty(type));
-			for(int i=1;i<pdfReader.getNumberOfPages();i++) {
+			regexAl.addAll(Arrays.asList(prop.getProperty(type).split(",")));
+			pattern = Pattern.compile(regexAl.get(0));
+			for(int i=1;i<=pdfReader.getNumberOfPages();i++) {
 				pageContent=null;
 				// Extract the page content using PdfTextExtractor.
 				pageContent = PdfTextExtractor.getTextFromPage(pdfReader, i);
+				//System.out.println(pageContent);
+				//If Page is First Page
+				if(i==1) {
+					//Compiling Patterns
+					invNumPat=Pattern.compile(regexAl.get(1));
+					invPerPat=Pattern.compile(regexAl.get(2));
+					
+					//Matching Patterns
+					invNumMat=invNumPat.matcher(pageContent);
+					invPerMat=invPerPat.matcher(pageContent);
+					
+					while(invNumMat.find()) {
+						invoiceNumber=invNumMat.group();
+					}
+					
+					while(invPerMat.find()) {
+						invoicePeriod=invPerMat.group();
+					}
+				}
+				
+				
 				Matcher matcher = pattern.matcher(pageContent);
 				while(matcher.find()) {
 					ArrayList<String> data=new ArrayList<>();
@@ -67,6 +120,11 @@ public class PdfStripper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return map;
+		
+		excelData.setInvoiceNumber(invoiceNumber);
+		excelData.setInvoicePeriod(invoicePeriod);
+		excelData.setMap(map);
+		//System.out.println("ExcelData :"+excelData);
+		return excelData;
 	}
 }

@@ -5,13 +5,25 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"> <!-- bean definitions here -->
 
-	<bean id="stripper" class="com.awc.PdfStripper">
+	<bean id="excelData" class="com.awc.dao.ExcelData"/>
+	
+	<bean class="org.apache.poi.xssf.usermodel.XSSFWorkbook"/>
+	
+
+	<bean id="stripper" class="com.awc.PdfStripper" autowire="byType">
 		<property name="prop">
 			<util:properties location="classpath:regex.properties" />
 		</property>
 		<property name="map">
 			<util:map map-class="java.util.TreeMap" />
 		</property>
+		<property name="regexAl">
+			<util:list list-class="java.util.ArrayList"/>
+		</property>
+	</bean>
+	
+	<bean id="excelWriter" class="com.awc.ExcelGenerate" autowire="byType">
+		
 	</bean>
 
 </beans>

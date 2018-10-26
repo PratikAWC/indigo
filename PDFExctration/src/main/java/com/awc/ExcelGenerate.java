@@ -7,60 +7,99 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import com.awc.dao.ExcelData;
 
 public class ExcelGenerate {
-	public void test() throws IOException {
-		PdfStripper cs = new PdfStripper();
 
+/**
+ * @author Pratik
+ *
+ */
+	private ExcelData excelData;
+	private PdfStripper stripper;
+	private Map<Integer, ArrayList<String>> map;
+	public ExcelGenerate() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @return the stripper
+	 */
+	public PdfStripper getStripper() {
+		return stripper;
+	}
+
+	/**
+	 * @param stripper the stripper to set
+	 */
+	public void setStripper(PdfStripper stripper) {
+		this.stripper = stripper;
+	}
+	
+	public void writeExcelGoa(String path,String type) {
+		int i=0;
+		excelData=stripper.readPdf(path, type);
+		XSSFWorkbook workbook=new XSSFWorkbook();
+		XSSFSheet sheet=workbook.createSheet("Cargo GOA");
+		Row row=sheet.createRow(i++);
+		row.createCell(0).setCellValue("SerialNo");row.createCell(1).setCellValue("Period");
+		row.createCell(2).setCellValue("City");row.createCell(3).setCellValue("NatureOfInvoice");
+		row.createCell(4).setCellValue("Invoice Number");row.createCell(5).setCellValue("Flight Date");
+		row.createCell(6).setCellValue("Flight Number");row.createCell(7).setCellValue("AWB Number");
+		row.createCell(8).setCellValue("Quantity");row.createCell(9).setCellValue("Rate");
+		row.createCell(10).setCellValue("Total");
 		
-		/*Map<Integer, ArrayList<String>> m = cs.getPdf();
-		try {
-			String filename = "C:\\Users\\Pratik\\Desktop\\Indigo Data\\Cargo\\GOIFile.xls";
-			HSSFWorkbook workbook = new HSSFWorkbook();
-			HSSFSheet sheet = workbook.createSheet("InvoiceSheet");
-
-			HSSFRow rowhead = sheet.createRow((short) 0);
-			rowhead.createCell(0).setCellValue("S.No.");
-			rowhead.createCell(1).setCellValue("Flight date");
-			rowhead.createCell(2).setCellValue("flight Number)");
-			rowhead.createCell(3).setCellValue("AWB Nmber");
-			rowhead.createCell(4).setCellValue("Quantity");
-			rowhead.createCell(5).setCellValue("Rate");
-			rowhead.createCell(6).setCellValue("TOTAL(RS.)");
-
-			int counter = 1;
-
-			Set<Entry<Integer, ArrayList<String>>> set=m.entrySet();
-			Iterator<Entry<Integer, ArrayList<String>>> itr=set.iterator();
-			int count=1;
-			while(itr.hasNext()) {
-				HSSFRow row = sheet.createRow(count++);
-				Entry<Integer, ArrayList<String>> entry=itr.next();
-				 ArrayList<String> arr=entry.getValue();
-				for(int j=0;j<arr.size();j++) {
-					if(j==4 || j==5 || j==6) {
-						row.createCell(j).setCellValue(Float.parseFloat(arr.get(j)));
-					}
-					else {
-						row.createCell(j).setCellValue(arr.get(j));
-					}
+		TreeMap<Integer, ArrayList<String>> map=excelData.getMap();
+		Set<Entry<Integer,ArrayList<String>>> set= map.entrySet();
+		Iterator<Entry<Integer,ArrayList<String>>> itr=set.iterator();
+		
+		while(itr.hasNext()) {
+			row=sheet.createRow(i++);
+			Entry<Integer,ArrayList<String>> entry = itr.next();
+			ArrayList al=entry.getValue();
+			int index=0;
+			for(int j=0;j<al.size();j++) {
+				if(j==0) {
+					row.createCell(j).setCellValue(Integer.valueOf(String.valueOf(al.get(j))));
 				}
+				else if(j==1) {
+					row.createCell(j).setCellValue(excelData.getInvoicePeriod());
+					row.createCell(j+4).setCellValue(String.valueOf(al.get(j)));
+				}
+				else if(j==2) {
+					row.createCell(j).setCellValue("GOA");
+					row.createCell(j+4).setCellValue(String.valueOf(al.get(j)));
+				}
+				else if(j==3) {
+					row.createCell(j).setCellValue("INBOUND");
+					row.createCell(j+4).setCellValue(Long.valueOf(String.valueOf(al.get(j))));
+				}
+				else if(j==4) {
+					row.createCell(j).setCellValue(excelData.getInvoiceNumber());
+					row.createCell(j+4).setCellValue(Float.valueOf(String.valueOf(al.get(j))));
+				}
+				else if(j==5) {
+					row.createCell(j+4).setCellValue(Float.valueOf(String.valueOf(al.get(j))));
+				}
+				
+				else if(j==6) {
+					row.createCell(j+4).setCellValue(Integer.valueOf(String.valueOf(al.get(j))));
+				}
+				
 			}
-
-			FileOutputStream fileOut = new FileOutputStream(filename);
-			workbook.write(fileOut);
-			fileOut.close();
-			workbook.close();
-			System.out.println("Your excel file has been generated!");
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
-
-*/	}
-
+		
+		try (FileOutputStream outputStream = new FileOutputStream("GOACargo.xlsx")) {
+            workbook.write(outputStream);
+        }
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
