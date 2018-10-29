@@ -20,7 +20,7 @@ public class DriverClass {
 	public static void main(String[] args) {
 		ApplicationContext ctx=new ClassPathXmlApplicationContext("spring.xml");
 		ExcelGenerate eg=(ExcelGenerate)ctx.getBean("excelWriter");
-		eg.writeExcelGoa("C:\\Users\\Pratik\\Desktop\\Indigo Data\\Cargo\\AAICLAS - GOI.pdf", "CargoGoa");
+		eg.writeExcelBBI("C:\\Users\\Pratik\\Desktop\\Indigo Data\\Cargo\\AAICLAS - BBI.pdf", "CargoBBI");
 		
 		}
 

@@ -19,10 +19,10 @@ public class PdfStripper {
 	private TreeMap<Integer, ArrayList<String>> map;
 	private PdfReader pdfReader;
 	private String pageContent;
-	private Pattern pattern,invNumPat,invPerPat;
+	private Pattern pattern,invNumPat,invPerPat,boundedDataPat;
 	private ArrayList<String> regexAl;
 	private String invoiceNumber,invoicePeriod;
-	private Matcher invNumMat,invPerMat;
+	private Matcher invNumMat,invPerMat,boundedDatamat;
 	/**
 	 * @return the regexAl
 	 */
@@ -94,18 +94,25 @@ public class PdfStripper {
 					//Compiling Patterns
 					invNumPat=Pattern.compile(regexAl.get(1));
 					invPerPat=Pattern.compile(regexAl.get(2));
-					
+					boundedDataPat=Pattern.compile(regexAl.get(3));
 					//Matching Patterns
 					invNumMat=invNumPat.matcher(pageContent);
 					invPerMat=invPerPat.matcher(pageContent);
+					boundedDatamat=boundedDataPat.matcher(pageContent);
+					
 					
 					while(invNumMat.find()) {
-						invoiceNumber=invNumMat.group();
+						excelData.setInvoiceNumber(invNumMat.group());
 					}
 					
 					while(invPerMat.find()) {
-						invoicePeriod=invPerMat.group();
+						excelData.setInvoicePeriod(invPerMat.group());
 					}
+					
+					while(boundedDatamat.find()) {
+						excelData.setNature(boundedDatamat.group());
+					}
+					
 				}
 				
 				
@@ -121,8 +128,6 @@ public class PdfStripper {
 			e.printStackTrace();
 		}
 		
-		excelData.setInvoiceNumber(invoiceNumber);
-		excelData.setInvoicePeriod(invoicePeriod);
 		excelData.setMap(map);
 		//System.out.println("ExcelData :"+excelData);
 		return excelData;

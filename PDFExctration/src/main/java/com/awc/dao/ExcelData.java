@@ -6,7 +6,7 @@ import java.util.TreeMap;
 public class ExcelData {
 	
 	private TreeMap<Integer, ArrayList<String>> map;
-	private String invoiceNumber,invoicePeriod,vendorName;
+	private String invoiceNumber,invoicePeriod,nature;
 	
 	public ExcelData() {
 		// TODO Auto-generated constructor stub
@@ -19,12 +19,12 @@ public class ExcelData {
 	 * @param vendorName
 	 */
 	public ExcelData(TreeMap<Integer, ArrayList<String>> map, String invoiceNumber, String invoicePeriod,
-			String vendorName) {
+			String vendorName,String nature) {
 		super();
 		this.map = map;
 		this.invoiceNumber = invoiceNumber;
 		this.invoicePeriod = invoicePeriod;
-		this.vendorName = vendorName;
+		this.nature = nature;
 	}
 
 	/**
@@ -70,17 +70,17 @@ public class ExcelData {
 	}
 
 	/**
-	 * @return the vendorName
+	 * @return the nature
 	 */
-	public String getVendorName() {
-		return vendorName;
+	public String getNature() {
+		return nature;
 	}
 
 	/**
-	 * @param vendorName the vendorName to set
+	 * @param nature the nature to set
 	 */
-	public void setVendorName(String vendorName) {
-		this.vendorName = vendorName;
+	public void setNature(String nature) {
+		this.nature = nature;
 	}
 
 	/* (non-Javadoc)
@@ -93,7 +93,7 @@ public class ExcelData {
 		result = prime * result + ((invoiceNumber == null) ? 0 : invoiceNumber.hashCode());
 		result = prime * result + ((invoicePeriod == null) ? 0 : invoicePeriod.hashCode());
 		result = prime * result + ((map == null) ? 0 : map.hashCode());
-		result = prime * result + ((vendorName == null) ? 0 : vendorName.hashCode());
+		result = prime * result + ((nature == null) ? 0 : nature.hashCode());
 		return result;
 	}
 
@@ -124,10 +124,10 @@ public class ExcelData {
 				return false;
 		} else if (!map.equals(other.map))
 			return false;
-		if (vendorName == null) {
-			if (other.vendorName != null)
+		if (nature == null) {
+			if (other.nature != null)
 				return false;
-		} else if (!vendorName.equals(other.vendorName))
+		} else if (!nature.equals(other.nature))
 			return false;
 		return true;
 	}
@@ -138,7 +138,10 @@ public class ExcelData {
 	@Override
 	public String toString() {
 		return "ExcelData [map=" + map + ", invoiceNumber=" + invoiceNumber + ", invoicePeriod=" + invoicePeriod
-				+ ", vendorName=" + vendorName + "]";
+				+ ", nature=" + nature + "]";
 	}
+
 	
+
+		
 }
